@@ -1,0 +1,13 @@
+.image-frame {
+  float:left;
+  margin: 0;
+  margin-left: 10px;
+  &:first-child{
+    margin-left: 0;
+  }
+}
+.image-wrapper{}
+.image-container {
+  margin: 0px;
+  padding: 0px;
+}
