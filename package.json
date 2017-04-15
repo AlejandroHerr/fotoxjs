@@ -20,7 +20,6 @@
     "react-measure": "^1.4.6",
     "react-motion": "^0.4.7",
     "react-proptypes": "^0.0.1",
-    "resize-observer-polyfill": "^1.4.2",
     "shallow-equal": "^1.0.0",
     "tape": "^4.6.3"
   },
