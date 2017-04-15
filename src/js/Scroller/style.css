@@ -1,0 +1,36 @@
+.scroll, .scroll-cursor {
+  height: 5px;
+}
+.scroller{
+  position: absolute;
+  top: 8rem;
+  bottom: 2rem;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+}
+.scroll{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  opacity: 0.7;
+  background-color: rgba(255,255,255,0);
+  &:hover {
+    opacity: 1;
+    background-color: rgba(255,255,255,0.2);
+  }
+}
+.scroll-cursor{
+  position: absolute;
+  top: 0;
+  border-radius: 1px;
+  z-index: 2;
+  background-color: rgba(0,0,0,0.8);
+}
+.scroll-area {
+  position: absolute;
+  height: 100%;
+  display: inline-flex;
+}
