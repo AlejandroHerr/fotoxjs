@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css?family=Alfa+Slab+One|Abril+Fatface|Share+Tech+Mono|VT323');
+
+body {
+  color: rgba(0,0,0,0.8);
+}
+
+
+.font--mono {
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.font--display{
+  font-family: 'Alfa Slab One', cursive;
+  font-weight: 400 !important;
+}
+.h0 {
+  font-size: 2.5rem;
+}
+.text-shadow--mild {
+  text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);
+}
