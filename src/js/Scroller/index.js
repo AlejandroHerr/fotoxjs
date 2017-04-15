@@ -60,7 +60,7 @@ class Scroller extends PureComponent {
     const { areaWidth, mouseX, windowSize: { height, width } } = this.state;
     const { children, damping, precision, stiffness, styles } = this.props;
 
-    const scrollWidth = (width ** 2) / areaWidth || 0;
+    const scrollWidth = (width * width) / areaWidth || 0;
     const position = computePosition(width, scrollWidth, mouseX) || 0;
 
     return (
