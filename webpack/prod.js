@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const webpackMerge = require('webpack-merge');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const cssModules = new ExtractTextPlugin({
   filename: 'app_[contenthash].css',
@@ -68,5 +69,6 @@ module.exports = webpackMerge(baseConfig,
       }),
       cssModules,
       globalCss,
+      new BundleAnalyzerPlugin(),
     ],
   });
