@@ -4,11 +4,11 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const cssModules = new ExtractTextPlugin({
-  filename: 'app_[contenthash].css',
+  filename: 'app.css',
   allChunks: true,
 });
 const globalCss = new ExtractTextPlugin({
-  filename: 'global_[contenthash].css',
+  filename: 'global.css',
   allChunks: true,
 });
 const baseConfig = require('./base.js');

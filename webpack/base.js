@@ -28,7 +28,7 @@ module.exports = {
       },
     }),
     new HtmlWebpackPlugin({
-      title: 'My App',
+      title: 'FotoxJS',
       filename: 'index.html',
       template: `${path.resolve(__dirname, '../', 'src')}/index.html`,
     }),
