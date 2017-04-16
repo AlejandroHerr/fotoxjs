@@ -1,4 +1,4 @@
 {
   presets: [[ "es2015", { modules: false }], "react",] ,
-  plugins: ["transform-object-rest-spread"]
+  plugins: ["flow-react-proptypes","transform-object-rest-spread"]
 }
