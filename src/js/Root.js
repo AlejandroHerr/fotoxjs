@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import 'basscss/css/basscss.css';
 import Scroller from './Scroller';
