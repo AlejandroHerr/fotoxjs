@@ -1,4 +1,8 @@
-export function mouseDown(e) {
+/* global MouseEvent,SyntheticMouseEvent */
+// @flow
+import type { Dimensions } from './types';
+
+export function mouseDown(e: SyntheticMouseEvent): void {
   e.persist();
   e.preventDefault();
   e.stopPropagation();
@@ -10,14 +14,14 @@ export function mouseDown(e) {
     }));
   }
 }
-export function mouseMove(e) {
+export function mouseMove(e: MouseEvent): void {
   if (this.state.isScrolling) {
     this.setState(state => ({
       ...state,
       mouseX: e.clientX }));
   }
 }
-export function mouseUp(e) {
+export function mouseUp(e: MouseEvent): void {
   if (this.state.isScrolling) {
     this.setState(state => ({
       ...state,
@@ -26,15 +30,16 @@ export function mouseUp(e) {
     }));
   }
 }
-export function setAreaWidth(measure) {
+
+export function setAreaWidth({ width }: Dimensions) : void {
   this.setState(state => ({
     ...state,
-    areaWidth: measure.width,
+    areaWidth: width,
   }));
 }
-export function setWindowSize(measure) {
+export function setWindowSize({ height, width }: Dimensions): void {
   this.setState(state => ({
     ...state,
-    windowSize: { height: measure.height, width: measure.width },
+    windowSize: { height, width },
   }));
 }
