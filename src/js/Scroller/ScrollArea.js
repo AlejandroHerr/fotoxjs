@@ -1,9 +1,11 @@
+// @flow
 import React from 'react';
 import Measure from 'react-measure';
+
 import type { Dimensions } from './types';
 
 type ScrollAreaProps = {
-  children: React.Component,
+  children: typeof React.Component,
   height: number,
   position: number,
   styles: { [key: string]: string },

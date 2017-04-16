@@ -21,11 +21,10 @@ const computePosition = (width: number, scrollWidth: number, mouseX: number): nu
 
 type ScrollerProps = {
   children: React.Children,
-  damping: number,
-  document: typeof document,
-  precision: number,
-  stiffness: number,
-  styles: { [key: string]: string },
+  damping?: number,
+  document?: typeof document,
+  precision?: number,
+  stiffness?: number,
 };
 
 const scrollerDefaultProps = {
