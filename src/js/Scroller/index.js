@@ -20,12 +20,12 @@ const computePosition = (width: number, scrollWidth: number, mouseX: number): nu
 };
 
 type ScrollerProps = {
-  children: ?React.Children,
-  damping: ?number,
-  document: ?typeof document,
-  precision: ?number,
-  stiffness: ?number,
-  styles: ?{ [key: string]: string },
+  children: React.Children,
+  damping: number,
+  document: typeof document,
+  precision: number,
+  stiffness: number,
+  styles: { [key: string]: string },
 };
 
 const scrollerDefaultProps = {
@@ -34,7 +34,6 @@ const scrollerDefaultProps = {
   damping: 26,
   precision: 0.01,
   stiffness: 170,
-  styles: {},
 };
 
 type ScrollerState = {
