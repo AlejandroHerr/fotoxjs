@@ -3,5 +3,5 @@
 [include]
 
 [libs]
-
+./.flowtypes/
 [options]
