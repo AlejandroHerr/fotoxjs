@@ -1,4 +1,4 @@
-import { MouseEvent, SyntheticMouseEvent, StatefullComponent } from '../helpers';
+import { MouseEvent, SyntheticMouseEvent, SyntheticWheelEvent, StatefullComponent } from '../helpers';
 import * as actions from '../../src/js/Scroller/actions';
 
 export default ({ test: subtest }) => {
@@ -82,6 +82,58 @@ export default ({ test: subtest }) => {
     t.notEqual(nextState, prevState, 'Should not mutate the state');
     t.deepEqual(nextState, { ...prevState, isScrolling: false, mouseX: 100 }, 'Should set isScrolling and mouseX');
 
+    t.end();
+  });
+
+  subtest('--> wheel', (t) => {
+    const initialState = {
+      areaWidth: 200,
+      mouseX: 0,
+      isScrolling: false,
+      windowSize: { height: 0, width: 100 },
+    };
+    const component = new StatefullComponent(initialState, {});
+    const wheel = actions.wheel.bind(component);
+
+    const event = new SyntheticWheelEvent(1);
+    wheel(event);
+    let nextState = component.state;
+
+    t.ok(event.persisted, 'Should persiste event');
+    t.notEqual(nextState, initialState, 'Should not mutate the state');
+    t.deepEqual(nextState, {
+      ...initialState,
+      mouseX: initialState.mouseX + (0.05 * initialState.windowSize.width),
+    }, 'It moves 10%');
+
+    for (let i = 0; i <= 19; i += 1) {
+      wheel(new SyntheticWheelEvent(1));
+    }
+    nextState = component.state;
+
+    t.deepEqual(nextState, {
+      ...initialState,
+      mouseX: initialState.windowSize.width,
+    }, 'It doesnt exceeds 100%');
+
+    const prevState = nextState;
+    wheel(new SyntheticWheelEvent(-1));
+    nextState = component.state;
+
+    t.deepEqual(nextState, {
+      ...prevState,
+      mouseX: prevState.mouseX - (0.05 * prevState.windowSize.width),
+    }, 'It moves -10%');
+
+    for (let i = 0; i <= 19; i += 1) {
+      wheel(new SyntheticWheelEvent(-1));
+    }
+    nextState = component.state;
+
+    t.deepEqual(nextState, {
+      ...prevState,
+      mouseX: 0,
+    }, 'It shouldnt move below 0');
     t.end();
   });
 

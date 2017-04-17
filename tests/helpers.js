@@ -47,6 +47,13 @@ export function SyntheticMouseEvent(type, button, sx, sy, cx, cy) {
   return event;
 }
 
+export function SyntheticWheelEvent(deltaY = 1) {
+  const event = new SyntheticMouseEvent('type', 0, 0, 0, 0, 0);
+  event.deltaY = deltaY;
+
+  return event;
+}
+
 export function StatefullComponent(initialState = {}, initialProps = {}) {
   this.props = initialProps;
   this.state = initialState;

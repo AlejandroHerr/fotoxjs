@@ -1,4 +1,4 @@
-/* global Children,Dimensions,Document,document,MouseEvent,SyntheticMouseEvent */
+/* global Children,Dimensions,Document,document,MouseEvent,SyntheticMouseEvent,SyntheticWheelEvent */
 // @flow
 import React, { PureComponent } from 'react';
 import shallowEqualObjects from 'shallow-equal/objects';
@@ -46,6 +46,7 @@ class Scroller extends PureComponent {
   mouseDown: (e: SyntheticMouseEvent) => void;
   mouseMove: (e: MouseEvent) => void;
   mouseUp: (e: MouseEvent) => void;
+  wheel: (e: SyntheticWheelEvent) => void;
   setAreaWidth:(Dimensions) => void;
   setWindowSize: (Dimensions) => void;
   state: ScrollerState;
@@ -63,6 +64,7 @@ class Scroller extends PureComponent {
     this.mouseDown = actions.mouseDown.bind(this);
     this.mouseMove = actions.mouseMove.bind(this);
     this.mouseUp = actions.mouseUp.bind(this);
+    this.wheel = actions.wheel.bind(this);
     this.setAreaWidth = actions.setAreaWidth.bind(this);
     this.setWindowSize = actions.setWindowSize.bind(this);
   }
@@ -97,7 +99,9 @@ class Scroller extends PureComponent {
 
     return (
       <Measure whitelist={['height', 'width']} onMeasure={this.setWindowSize}>
-        <div styleName="scroller">
+        <div
+          styleName="scroller" onWheel={this.wheel}
+        >
           <Motion style={{ x: spring(position, { damping, precision, stiffness }) }}>
             {({ x }) => {
               const scrollAreaPosition = (100 * x * (areaWidth - width)) / areaWidth || 0;

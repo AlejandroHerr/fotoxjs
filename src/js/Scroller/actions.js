@@ -1,4 +1,4 @@
-/* global MouseEvent,SyntheticMouseEvent */
+/* global MouseEvent,SyntheticMouseEvent,SyntheticWheelEvent */
 // @flow
 import type { Dimensions } from './types';
 
@@ -29,6 +29,19 @@ export function mouseUp(e: MouseEvent): void {
       isScrolling: false,
     }));
   }
+}
+
+export function wheel(e: SyntheticWheelEvent): void {
+  e.persist();
+  const { mouseX, windowSize: { width } } = this.state;
+  const sign = e.deltaY > 0 ? 1 : -1;
+  const delta = mouseX + (sign * (0.05 * width));
+  const diff = delta > width ? width : (delta < 0 ? 0 : delta);
+
+  this.setState(state => ({
+    ...state,
+    mouseX: diff,
+  }));
 }
 
 export function setAreaWidth({ width }: Dimensions) : void {
