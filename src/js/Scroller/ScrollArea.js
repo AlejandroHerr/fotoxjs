@@ -23,7 +23,8 @@ const ScrollArea = ({
         className={styles['scroll-area']}
         style={{ transform: `translateX(-${position}%)` }}
       >
-        <Children height={height} /></div>
+        <Children height={height} />
+      </div>
     </Measure>);
 
 export default ScrollArea;
