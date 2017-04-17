@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "babel-tape-runner tests/**/*_spec.js | tap-summary",
+    "test": "babel-tape-runner tests/**/test.js | tap-summary",
     "build:watch": "cross-env webpack-dashboard -- node server.js",
     "build:prod": "cross-env NODE_ENV=production webpack -p --config webpack",
     "build:dev": "cross-env NODE_ENV=development webpack --config webpack",
