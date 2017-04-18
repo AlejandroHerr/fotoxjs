@@ -11,27 +11,34 @@ export function Mouse() {
 function preventDefault() { this.preventedDefault = true; }
 function stopPropagation() { this.stopedPropagation = true; }
 
-export function MouseEvent(type, button, sx, sy, cx, cy) {
+export function Event() {
   const event = {
-    bubbles: true,
-    cancelable: (type !== 'mousemove'),
-    view: false,
-    detail: 0,
-    screenX: sx,
-    screenY: sy,
-    clientX: cx,
-    clientY: cy,
-    ctrlKey: false,
-    altKey: false,
-    shiftKey: false,
-    metaKey: false,
-    button,
-    relatedTarget: undefined,
     preventedDefault: false,
     stopedPropagation: false,
   };
   event.preventDefault = preventDefault.bind(event);
   event.stopPropagation = stopPropagation.bind(event);
+
+  return event;
+}
+
+export function MouseEvent(type, button, sx, sy, cx, cy) {
+  const event = new Event();
+
+  event.bubbles = true;
+  event.cancelable = (type !== 'mousemove');
+  event.view = false;
+  event.detail = 0;
+  event.screenX = sx;
+  event.screenY = sy;
+  event.clientX = cx;
+  event.clientY = cy;
+  event.ctrlKey = false;
+  event.altKey = false;
+  event.shiftKey = false;
+  event.metaKey = false;
+  event.button = button;
+  event.relatedTarget = undefined;
 
   return event;
 }
@@ -47,9 +54,39 @@ export function SyntheticMouseEvent(type, button, sx, sy, cx, cy) {
   return event;
 }
 
-export function SyntheticWheelEvent(deltaY = 1) {
-  const event = new SyntheticMouseEvent('type', 0, 0, 0, 0, 0);
+export function WheelEvent(deltaX = 0, deltaY = 0, deltaZ = 0) {
+  const event = new Event();
+
+  event.deltaX = deltaX;
   event.deltaY = deltaY;
+  event.deltaZ = deltaZ;
+
+  return event;
+}
+export function SyntheticWheelEvent(deltaX = 0, deltaY = 0, deltaZ = 0) {
+  const event = new WheelEvent(deltaX, deltaY, deltaZ);
+
+  event.persisted = false;
+  event.persist = persist.bind(event);
+
+  return event;
+}
+export function TouchEvent(clientX = 0, clientY = 0) {
+  const event = new Event();
+
+  event.touches[0] = {
+    clientX,
+    clientY,
+  };
+
+  return event;
+}
+
+export function SyntheticTouchEvent(clientX = 0, clientY = 0) {
+  const event = new TouchEvent(clientY, clientY);
+
+  event.persisted = false;
+  event.persist = persist.bind(event);
 
   return event;
 }

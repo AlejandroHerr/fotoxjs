@@ -42,19 +42,16 @@ export default ({ test: subtest }) => {
     const component = new StatefullComponent(initialState, {});
     const mouseMove = actions.mouseMove.bind(component);
 
-    const event = new MouseEvent('mousemove', 0, 0, 0, 100, 200);
-    mouseMove(event);
-    let nextState = component.state;
+    mouseMove(new MouseEvent('mousemove', 0, 0, 0, 100, 200));
 
-    t.equal(nextState, initialState, 'It doesn\'t do anything if isScrolling unset');
+    t.equal(component.state, initialState, 'It doesn\'t do anything if isScrolling unset');
 
     const prevState = { ...initialState, isScrolling: true };
     component.state = prevState;
-    mouseMove(event);
-    nextState = component.state;
+    mouseMove(new MouseEvent('mousemove', 0, 0, 0, 100, 200));
 
-    t.notEqual(nextState, prevState, 'Should not mutate the state');
-    t.deepEqual(nextState, { ...prevState, mouseX: 100 }, 'Should set mouseX');
+    t.notEqual(component.state, prevState, 'Should not mutate the state');
+    t.deepEqual(component.state, { ...prevState, mouseX: 100 }, 'Should set mouseX');
 
     t.end();
   });
@@ -68,19 +65,16 @@ export default ({ test: subtest }) => {
     const component = new StatefullComponent(initialState, {});
     const mouseUp = actions.mouseUp.bind(component);
 
-    const event = new MouseEvent('mousemove', 0, 0, 0, 100, 200);
-    mouseUp(event);
-    let nextState = component.state;
+    mouseUp(new MouseEvent('mousemove', 0, 0, 0, 100, 200));
 
-    t.equal(nextState, initialState, 'It doesn\'t do anything if isScrolling unset');
+    t.equal(component.state, initialState, 'It doesn\'t do anything if isScrolling unset');
 
     const prevState = { ...initialState, isScrolling: true };
     component.state = prevState;
-    mouseUp(event);
-    nextState = component.state;
+    mouseUp(new MouseEvent('mousemove', 0, 0, 0, 100, 200));
+    t.notEqual(component.state, prevState, 'Should not mutate the state');
 
-    t.notEqual(nextState, prevState, 'Should not mutate the state');
-    t.deepEqual(nextState, { ...prevState, isScrolling: false, mouseX: 100 }, 'Should set isScrolling and mouseX');
+    t.deepEqual(component.state, { ...initialState, isScrolling: false, mouseX: 100 }, 'Should set isScrolling and mouseX');
 
     t.end();
   });
@@ -95,7 +89,7 @@ export default ({ test: subtest }) => {
     const component = new StatefullComponent(initialState, {});
     const wheel = actions.wheel.bind(component);
 
-    const event = new SyntheticWheelEvent(1);
+    const event = new SyntheticWheelEvent(0, 1);
     wheel(event);
     let nextState = component.state;
 
@@ -107,7 +101,7 @@ export default ({ test: subtest }) => {
     }, 'It moves 10%');
 
     for (let i = 0; i <= 19; i += 1) {
-      wheel(new SyntheticWheelEvent(1));
+      wheel(new SyntheticWheelEvent(0, 1));
     }
     nextState = component.state;
 
@@ -117,7 +111,7 @@ export default ({ test: subtest }) => {
     }, 'It doesnt exceeds 100%');
 
     const prevState = nextState;
-    wheel(new SyntheticWheelEvent(-1));
+    wheel(new SyntheticWheelEvent(0, -1));
     nextState = component.state;
 
     t.deepEqual(nextState, {
@@ -126,7 +120,7 @@ export default ({ test: subtest }) => {
     }, 'It moves -10%');
 
     for (let i = 0; i <= 19; i += 1) {
-      wheel(new SyntheticWheelEvent(-1));
+      wheel(new SyntheticWheelEvent(0, -1));
     }
     nextState = component.state;
 
