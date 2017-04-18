@@ -74,16 +74,16 @@ export function SyntheticWheelEvent(deltaX = 0, deltaY = 0, deltaZ = 0) {
 export function TouchEvent(clientX = 0, clientY = 0) {
   const event = new Event();
 
-  event.touches[0] = {
+  event.touches = [{
     clientX,
     clientY,
-  };
+  }];
 
   return event;
 }
 
 export function SyntheticTouchEvent(clientX = 0, clientY = 0) {
-  const event = new TouchEvent(clientY, clientY);
+  const event = new TouchEvent(clientX, clientY);
 
   event.persisted = false;
   event.persist = persist.bind(event);
