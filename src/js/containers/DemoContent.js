@@ -1,22 +1,34 @@
+// @flow
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import CSSModules from 'react-css-modules';
 import Image from '../components/Image';
 import stylesheet from './demoContent_style.css';
 
-const getImageUrl = (width, height, id) => `http://lorempixel.com/${width}/${height}/cats/${id}/`;
+const getImageUrl = (width: number, height: number, id: number): string => `http://lorempixel.com/${width}/${height}/cats/${id}/`;
 
-const imagesUrl = Array
+const imagesUrl: Array<{ url: string, vertical: bool }> = Array
   .from(Array(10).keys())
   .map((idx) => {
-    const vertical = Math.random() > 0.75;
+    const vertical: bool = Math.random() > 0.75;
     return { url: vertical ? getImageUrl(400, 600, idx) : getImageUrl(600, 400, idx),
       vertical };
   });
 
+type DemoContentProps = {
+  height: number,
+  styles: { [key: string]: string},
+};
+
+const demoContentDefaultProps = {
+  height: 0,
+};
 
 class DemoContent extends PureComponent {
-  constructor(props) {
+  images: Array<{ url: string, vertical: bool }>;
+  props: DemoContentProps;
+  static defaultProps: typeof demoContentDefaultProps;
+
+  constructor(props: DemoContentProps) {
     super(props);
     this.images = imagesUrl;
   }
@@ -29,19 +41,12 @@ class DemoContent extends PureComponent {
 
     return (
       <div style={{ display: 'inherit' }}>
-        {this.images.map(({ url, vertical }, idx) => <Image height={height} idx={idx} key={`cat${idx}`} styles={styles} url={url} vertical={vertical} />)}
+        {this.images.map(({ url, vertical }, idx) => (
+          <Image height={height} idx={idx} key={`cat${idx}`} styles={styles} url={url} vertical={vertical} />))}
       </div>);
   }
 }
 
-DemoContent.defaultProps = {
-  height: 0,
-  styles: null,
-};
-
-DemoContent.propTypes = {
-  height: PropTypes.number,
-  styles: PropTypes.objectOf(PropTypes.string),
-};
+DemoContent.defaultProps = demoContentDefaultProps;
 
 export default CSSModules(DemoContent, stylesheet);

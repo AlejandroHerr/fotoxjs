@@ -1,7 +1,15 @@
+/* global SyntheticMouseEvent */
+// @flow
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const Scroll = ({ position, styles, width, onMouseDown }) => (
+type ScrollProps = {
+  position: number,
+  styles: { [key: string]: string },
+  width: number,
+  onMouseDown: (e: SyntheticMouseEvent) => void,
+};
+
+const Scroll = ({ position, styles, width, onMouseDown }: ScrollProps) => (
   <div className={styles.scroll} onMouseDown={onMouseDown}>
     <div
       className={styles['scroll-cursor']}
@@ -9,12 +17,5 @@ const Scroll = ({ position, styles, width, onMouseDown }) => (
       onMouseDown={onMouseDown}
     />
   </div>);
-
-Scroll.propTypes = {
-  position: PropTypes.number.isRequired,
-  styles: PropTypes.objectOf(PropTypes.string).isRequired,
-  width: PropTypes.number.isRequired,
-  onMouseDown: PropTypes.func.isRequired,
-};
 
 export default Scroll;

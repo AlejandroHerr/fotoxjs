@@ -4,12 +4,21 @@
     "plugins": [
         "react",
         "jsx-a11y",
-        "import"
+        "import",
+        "flowtype"
     ],
     "rules": {
       "react/jsx-filename-extension": [0, { "extensions": [".js"] }],
       "react/prefer-stateless-function": [1, { "ignorePureComponents": true }],
       "react/jsx-sort-props": [1, { "callbacksLast": true }],
-      "react/sort-prop-types": [1, { "callbacksLast": true }]
+      "react/sort-prop-types": [1, { "callbacksLast": true }],
+      "react/sort-comp": [1, {
+        "order": [
+          "type-annotations",
+          "static-methods",
+          "lifecycle",
+          "everything-else",
+          "render"
+        ]}]
     }
 }
