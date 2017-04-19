@@ -1,8 +1,8 @@
 {
   "name": "fotoxjs",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.1",
+  "description": "WebApp to dispay your portofolio in an horizontal scroller",
+  "main": "build/index.html",
   "scripts": {
     "test": "babel-tape-runner tests/**/test.js | tap-summary",
     "build:watch": "cross-env webpack-dashboard -- node server.js",
@@ -11,12 +11,23 @@
     "deploy:ghp": "gh-pages -d build",
     "ghp": "npm run build:prod && npm run deploy:ghp"
   },
-  "author": "",
+  "author": {
+    "name": "Alejandro Hernández",
+    "url": "AlejandroHerr, http://github.com/AlejandroHerr"
+  },
+   "demos": [
+    "https://alejandroherr.github.io/fotoxjs/"
+  ],
+  "repositories": [
+    {
+      "type": "git",
+      "url": "git+https://github.com/AlejandroHerr/fotoxjs.git"
+    }
+  ],
   "license": "MIT",
   "dependencies": {
     "basscss": "^8.0.3",
     "enzyme": "^2.8.2",
-    "prop-types": "^15.5.8",
     "react": "^15.4.2",
     "react-css-modules": "^4.2.0",
     "react-dom": "^15.5.4",
