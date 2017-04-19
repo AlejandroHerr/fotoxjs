@@ -2,7 +2,13 @@ const webpack = require('webpack');
 const webpackMerge = require('webpack-merge');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const baseConfig = require('./base.js');
 
+const analizer = new BundleAnalyzerPlugin({
+  analyzerMode: 'static',
+  reportFilename: 'report.html',
+  openAnalyzer: false,
+});
 const cssModules = new ExtractTextPlugin({
   filename: 'app.css',
   allChunks: true,
@@ -11,7 +17,6 @@ const globalCss = new ExtractTextPlugin({
   filename: 'global.css',
   allChunks: true,
 });
-const baseConfig = require('./base.js');
 
 module.exports = webpackMerge(baseConfig,
   {
@@ -69,6 +74,6 @@ module.exports = webpackMerge(baseConfig,
       }),
       cssModules,
       globalCss,
-      new BundleAnalyzerPlugin(),
+      analizer,
     ],
   });
