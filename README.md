@@ -1,4 +1,9 @@
 # fotoxjs
+
+[![Build Status](https://travis-ci.org/AlejandroHerr/fotoxjs.svg?branch=master)](https://travis-ci.org/AlejandroHerr/fotoxjs)
+[![dependencies Status](https://david-dm.org/alejandroherr/fotoxjs/status.svg)](https://david-dm.org/alejandroherr/fotoxjs)
+[![Dependency Status](https://david-dm.org/souporserious/react-measure.svg)](https://david-dm.org/souporserious/react-measure)
+
 fotoxjs is a webapp to display your photography. Build on top of react, it features your pictures inside an horizontal scroller (that responde to mouse, mouse-wheel and touch events).
 
 I'm coding it for my personal use, but if you want to give it try, use it, fork it or whatever, feel free.
