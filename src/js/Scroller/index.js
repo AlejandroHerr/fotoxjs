@@ -10,93 +10,60 @@ import ScrollArea from './ScrollArea';
 import * as actions from './actions';
 import { getScrollWidth } from './helpers'; import stylesheet from './style.css';
 import type { Dimensions, ScrollerState } from './types';
-
-type ScrollerProps = {
-  children: React.Children,
-  damping?: number,
-  document?: typeof document,
-  precision?: number,
-  stiffness?: number,
-};
-
-const scrollerDefaultProps = {
-  children: null,
-  document: (typeof document === 'object') ? document : undefined,
-  damping: 26,
-  precision: 0.01,
-  stiffness: 170,
-};
+import { compose, withState, withHandlers } from 'recompose';
 
 class Scroller extends PureComponent {
-  mouseDown: (e: SyntheticMouseEvent) => void;
-  mouseMove: (e: MouseEvent) => void;
-  mouseUp: (e: MouseEvent) => void;
-  wheel: (e: SyntheticWheelEvent) => void;
-  touchStart: (e: SyntheticTouchEvent) => void;
-  touchMove: (e: SyntheticTouchEvent) => void;
-  touchEnd: (e: SyntheticTouchEvent) => void;
-  setAreaWidth:(Dimensions) => void;
-  setWindowSize: (Dimensions) => void;
-  state: ScrollerState;
-  props: ScrollerProps;
-  static defaultProps: typeof scrollerDefaultProps;
-
-  constructor(props: ScrollerProps) {
-    super(props);
-    this.state = {
-      areaWidth: 0,
-      position: 0,
-      prevTouchX: 0,
-      isScrolling: false,
-      window: { height: 0, width: 0 },
-    };
-    this.mouseDown = actions.mouseDown.bind(this);
-    this.mouseMove = actions.mouseMove.bind(this);
-    this.mouseUp = actions.mouseUp.bind(this);
-    this.wheel = actions.wheel.bind(this);
-    this.touchStart = actions.touchStart.bind(this);
-    this.touchMove = actions.touchMove.bind(this);
-    this.touchEnd = actions.touchEnd.bind(this);
-    this.setAreaWidth = actions.setAreaWidth.bind(this);
-    this.setWindowSize = actions.setWindowSize.bind(this);
-  }
   componentDidMount() {
-    const { document: doc } = this.props;
+    const { document: doc, onMouseMove, onMouseUp } = this.props;
     if (doc !== undefined && doc !== null) {
-      doc.addEventListener('mousemove', this.mouseMove);
-      doc.addEventListener('mouseup', this.mouseUp);
+      doc.addEventListener('mousemove', onMouseMove);
+      doc.addEventListener('mouseup', onMouseUp);
     }
   }
   shouldComponentUpdate(nextProps: ScrollerProps, nextState: ScrollerState) {
-    const { isScrolling, ...cleanState } = this.state;
-    const { isScrolling: nextIsScrolling, ...nextCleanState } = nextState;
-
-    return !shallowEqualObjects(this.props, nextProps) ||
-      !shallowEqualObjects(cleanState, nextCleanState);
+    return !shallowEqualObjects(this.props.state, nextProps.state);
   }
   componentWillUnmount() {
-    const { document: doc } = this.props;
+    const { document: doc, onMouseMove, onMouseUp } = this.props;
     if (doc !== undefined && doc !== null) {
-      doc.removeEventListener('mousemove', this.mouseMove);
-      doc.removeEventListener('mouseup', this.mouseUp);
+      doc.removeEventListener('mousemove', onMouseMove);
+      doc.removeEventListener('mouseup', onMouseUp);
     }
   }
 
   render() {
-    const { areaWidth, position, window: { height, width } } = this.state;
-    const { children, damping, precision, stiffness, styles } = this.props;
+    const {
+      children,
+      damping,
+      precision,
+      state: {
+        areaWidth,
+        position,
+        window: {
+          height,
+          width,
+        },
+      },
+      setAreaWidth,
+      setWindowSize,
+      onTouchEnd,
+      onTouchMove,
+      onTouchStart,
+      onMouseDown,
+      onWheel,
+      stiffness,
+      styles } = this.props;
 
-    const scrollWidth: number = getScrollWidth(this.state);
+    const scrollWidth: number = getScrollWidth(this.props.state);
    // onst position: number = computePosition(width, scrollWidth, mouseX) || 0;
-
     return (
-      <Measure whitelist={['height', 'width']} onMeasure={this.setWindowSize}>
+      <Measure whitelist={['height', 'width']} onMeasure={setWindowSize}>
         <div
-          styleName="scroller"
-          onTouchEnd={this.touchEnd}
-          onTouchMove={this.touchMove}
-          onTouchStart={this.touchStart}
-          onWheel={this.wheel}
+          className={styles.scroller}
+          onTouchEnd={onTouchEnd}
+          onTouchMove={onTouchMove}
+          onTouchStart={onTouchStart}
+          onWheel={onWheel}
         >
           <Motion style={{ x: spring(position, { damping, precision, stiffness }) }}>
             {({ x }) => {
@@ -108,7 +75,7 @@ class Scroller extends PureComponent {
                   height={height}
                   position={scrollAreaPosition}
                   styles={styles}
-                  onMeasure={this.setAreaWidth}
+                  onMeasure={setAreaWidth}
                 >
                   {children}
                 </ScrollArea>
@@ -116,7 +83,7 @@ class Scroller extends PureComponent {
                   position={scrollerPosition}
                   styles={styles}
                   width={scrollWidth}
-                  onMouseDown={this.mouseDown}
+                  onMouseDown={onMouseDown}
                 />
               </div>);
             }}
@@ -126,6 +93,27 @@ class Scroller extends PureComponent {
   }
 }
 
-Scroller.defaultProps = scrollerDefaultProps;
 
-export default CSSModules(Scroller, stylesheet);
+const addState = compose(
+  withState('state', 'setState', {
+    areaWidth: 0,
+    position: 0,
+    prevTouchX: 0,
+    isScrolling: false,
+    window: { height: 0, width: 0 },
+  }),
+  withHandlers({
+    onMouseDown: actions.mouseDown,
+    onMouseMove: actions.mouseMove,
+    onMouseUp: actions.mouseUp,
+    onWheel: actions.wheel,
+    onTouchStart: actions.touchStart,
+    onTouchMove: actions.touchMove,
+    onTouchEnd: actions.touchEnd,
+    setAreaWidth: actions.setAreaWidth,
+    setWindowSize: actions.setWindowSize,
+  }),
+);
+
+
+export default addState(CSSModules(Scroller, stylesheet));

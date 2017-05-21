@@ -4,84 +4,86 @@ import { getPositionByClick, getPositionByTouch, getPositionByWheel } from './he
 
 import type { Dimensions } from './types';
 
-export function mouseDown(e: SyntheticMouseEvent): void {
+export const mouseDown = ({ setState }) => (e: SyntheticMouseEvent): void => {
   e.persist();
   e.preventDefault();
   e.stopPropagation();
   if (e.button === 0) {
-    this.setState(state => ({
+    setState(state => ({
       ...state,
-      position: getPositionByClick(this.state, e.clientX),
+      position: getPositionByClick(state, e.clientX),
       isScrolling: true,
     }));
   }
-}
-export function mouseMove(e: MouseEvent): void {
-  if (this.state.isScrolling) {
-    this.setState(state => ({
-      ...state,
-      position: getPositionByClick(this.state, e.clientX),
+};
+
+export const mouseMove = ({ state, setState }) => (e: MouseEvent): void => {
+  if (state.isScrolling) {
+    setState(prevState => ({
+      ...prevState,
+      position: getPositionByClick(prevState, e.clientX),
     }));
   }
-}
-export function mouseUp(e: MouseEvent): void {
-  if (this.state.isScrolling) {
-    this.setState(state => ({
-      ...state,
-      position: getPositionByClick(this.state, e.clientX),
+};
+
+export const mouseUp = ({ state, setState }) => (e: MouseEvent): void => {
+  if (state.isScrolling) {
+    setState(prevState => ({
+      ...prevState,
+      position: getPositionByClick(prevState, e.clientX),
       isScrolling: false,
     }));
   }
-}
+};
 
-export function wheel(e: SyntheticWheelEvent): void {
+export const wheel = ({ setState }) => (e: SyntheticWheelEvent): void => {
   e.persist();
-  this.setState(state => ({
+  setState(state => ({
     ...state,
-    position: getPositionByWheel(this.state, e.deltaY > 0 ? 0.1 : -0.1),
+    position: getPositionByWheel(state, e.deltaY > 0 ? 0.1 : -0.1),
   }));
-}
+};
 
-export function touchStart(e: SyntheticTouchEvent): void {
+export const touchStart = ({ setState }) => (e: SyntheticTouchEvent): void => {
   e.persist();
 
-  this.setState(state => ({
-    ...state,
+  setState(prevState => ({
+    ...prevState,
     prevTouchX: e.touches[0].clientX,
     isScrolling: true,
   }));
-}
+};
 
-export function touchMove(e: SyntheticTouchEvent): void {
+export const touchMove = ({ state, setState }) => (e: SyntheticTouchEvent): void => {
   e.persist();
 
-  if (this.state.isScrolling) {
-    this.setState(state => ({
-      ...state,
-      position: getPositionByTouch(this.state, e.touches[0].clientX),
+  if (state.isScrolling) {
+    setState(prevState => ({
+      ...prevState,
+      position: getPositionByTouch(prevState, e.touches[0].clientX),
       prevTouchX: e.touches[0].clientX,
     }));
   }
-}
+};
 
-export function touchEnd(): void {
-  if (this.state.isScrolling) {
-    this.setState(state => ({
-      ...state,
+export const touchEnd = ({ state, setState }) => (): void => {
+  if (state.isScrolling) {
+    setState(prevState => ({
+      ...prevState,
       isScrolling: false,
     }));
   }
-}
+};
 
-export function setAreaWidth({ width }: Dimensions) : void {
-  this.setState(state => ({
-    ...state,
+export const setAreaWidth = ({ setState }) => ({ width }: Dimensions) : void => {
+  setState(prevState => ({
+    ...prevState,
     areaWidth: width,
   }));
-}
-export function setWindowSize({ height, width }: Dimensions): void {
-  this.setState(state => ({
-    ...state,
+};
+export const setWindowSize = ({ setState }) => ({ height, width }: Dimensions): void => {
+  setState(prevState => ({
+    ...prevState,
     window: { height, width },
   }));
-}
+};
