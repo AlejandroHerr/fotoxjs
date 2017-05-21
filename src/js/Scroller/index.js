@@ -1,6 +1,8 @@
 /* global Children,Dimensions,Document,document,MouseEvent,SyntheticMouseEvent,SyntheticWheelEvent,SyntheticTouchEvent */
 // @flow
 import React, { PureComponent } from 'react';
+import { compose, withState, withHandlers } from 'recompose';
+import throttle from 'lodash/throttle';
 import shallowEqualObjects from 'shallow-equal/objects';
 import Measure from 'react-measure';
 import { Motion, spring } from 'react-motion';
@@ -10,7 +12,6 @@ import ScrollArea from './ScrollArea';
 import * as actions from './actions';
 import { getScrollWidth } from './helpers'; import stylesheet from './style.css';
 import type { Dimensions, ScrollerState } from './types';
-import { compose, withState, withHandlers } from 'recompose';
 
 class Scroller extends PureComponent {
   componentDidMount() {
@@ -104,9 +105,9 @@ const addState = compose(
   }),
   withHandlers({
     onMouseDown: actions.mouseDown,
-    onMouseMove: actions.mouseMove,
+    onMouseMove: throttle(actions.mouseMove, 100),
     onMouseUp: actions.mouseUp,
-    onWheel: actions.wheel,
+    onWheel: throttle(actions.wheel, 100),
     onTouchStart: actions.touchStart,
     onTouchMove: actions.touchMove,
     onTouchEnd: actions.touchEnd,
