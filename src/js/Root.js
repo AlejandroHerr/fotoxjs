@@ -14,6 +14,7 @@ const Root = () => (
     </header>
     <Scroller
       damping={50}
+      document={document}
       precision={0.01}
       stiffness={200}
     >
